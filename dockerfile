@@ -1,8 +1,8 @@
 # 使用阿里云的 CentOS 镜像
 FROM centos:8
 
-# 切换到阿里云的镜像源
-RUN echo -e "[centos]\nname=CentOS Linux\nbaseurl=https://mirrors.aliyun.com/centos/\$releasever/os/\$basearch/\ngpgcheck=1\ngpgkey=https://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-Official\nenabled=1" > /etc/yum.repos.d/CentOS-Base.repo && \
+# 使用官方的 CentOS 镜像
+RUN echo -e "[centos]\nname=CentOS Linux\nbaseurl=http://mirror.centos.org/centos/\$releasever/os/\$basearch/\ngpgcheck=1\ngpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official\nenabled=1" > /etc/yum.repos.d/CentOS-Base.repo && \
     dnf makecache
 
 # 安装基本工具和依赖项
