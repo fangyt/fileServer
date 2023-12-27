@@ -1,11 +1,10 @@
 # 第一阶段：构建应用程序
-FROM centos:8
+FROM centos:8 AS builder
 
 RUN yum -y update && \
+    yum -y install wget && \
     yum -y install nginx && \
     yum clean all
-
-
 
 # 安装 Python 3.8
 RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
@@ -24,11 +23,10 @@ COPY requirements.txt .
 RUN pip3.8 install --no-cache-dir -r requirements.txt
 
 # 复制应用程序代码
-COPY . .
-
+COPY . /app
 
 # 第二阶段：构建最终镜像
-FROM centos:latest
+FROM centos:8
 
 # 安装基础工具和依赖项
 RUN yum -y update && yum -y install \
