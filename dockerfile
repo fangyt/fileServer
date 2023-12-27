@@ -13,8 +13,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 安装 Nginx
-RUN yun check-update \
-    && yun install -y nginx \
+RUN yum check-update \
+    && yum install -y nginx \
     && rm -rf /var/lib/apt/lists/*
 
 # 复制 Nginx 配置文件
