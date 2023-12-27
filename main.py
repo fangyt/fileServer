@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
 import os
+import time
+from flask import Flask, request, jsonify, render_template, send_from_directory
 
 app = Flask(__name__)
 
@@ -35,11 +36,10 @@ def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
-import os
-import time
-
-
 def delete_old_files(folder_path=UPLOAD_FOLDER, days=3):
+    """
+    删除三天以前的文件
+    """
     # 获取当前时间戳
     current_time = time.time()
 
