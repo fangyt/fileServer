@@ -2,8 +2,7 @@
 FROM centos:8 AS builder
 
 RUN yum -y update && \
-    yum -y install wget && \
-    yum -y install nginx && \
+    yum -y install --disablerepo='*' --enablerepo='base' nginx && \
     yum clean all
 
 # 安装 Python 3.8
