@@ -1,19 +1,13 @@
 # 第一阶段：构建应用程序
-FROM centos:8 as builder
+FROM centos:8
 
-# 安装基本工具和依赖项
+# 更新系统并安装基本工具
 RUN yum -y update && yum -y install \
-    wget \
-    make \
-    gcc \
-    && yum clean all
+    epel-release \
+    && yum -y groupinstall "Development Tools"
 
-# 下载并安装 Python 3.8
-RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
-    && tar xzf Python-3.8.12.tgz \
-    && cd Python-3.8.12 \
-    && ./configure --enable-optimizations \
-    && make altinstall
+# 安装 Python 3
+RUN yum -y install python38
 
 # 设置工作目录
 WORKDIR /app
