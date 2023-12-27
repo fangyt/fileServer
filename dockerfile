@@ -1,10 +1,13 @@
 # 第一阶段：构建应用程序
 FROM centos:8
 
-# 更新系统并安装 Python 3
-RUN yum -y update && yum -y install \
-    python38 \
-    && yum clean all
+# 安装基本工具和依赖项
+RUN dnf -y install epel-release && \
+    dnf -y update && \
+    dnf -y install \
+        python38 \
+        nginx \
+    && dnf clean all
 
 # 设置工作目录
 WORKDIR /app
@@ -18,10 +21,8 @@ RUN pip3.8 install --no-cache-dir -r requirements.txt
 # 复制应用程序代码
 COPY . .
 
-# 安装基础工具和依赖项
-RUN yum -y update && yum -y install \
-    nginx \
-    && yum clean all
+# 清理缓存
+RUN dnf clean all
 
 # 复制 Nginx 配置文件
 COPY nginx.conf /etc/nginx/conf.d/default.conf
