@@ -1,9 +1,8 @@
-# 第一阶段：构建应用程序
+# 使用阿里云的 CentOS 镜像
 FROM centos:8
 
 # 切换到阿里云的镜像源
-RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
-    sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=https://mirrors.aliyun.com|g' /etc/yum.repos.d/CentOS-Base.repo && \
+RUN echo -e "[centos]\nname=CentOS Linux\nbaseurl=https://mirrors.aliyun.com/centos/\$releasever/os/\$basearch/\ngpgcheck=1\ngpgkey=https://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-Official\nenabled=1" > /etc/yum.repos.d/CentOS-Base.repo && \
     dnf makecache
 
 # 安装基本工具和依赖项
