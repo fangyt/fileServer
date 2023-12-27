@@ -1,6 +1,11 @@
 # 第一阶段：构建应用程序
 FROM centos:8
 
+# 切换到阿里云的镜像源
+RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=https://mirrors.aliyun.com|g' /etc/yum.repos.d/CentOS-Base.repo && \
+    dnf makecache
+
 # 安装基本工具和依赖项
 RUN dnf -y install epel-release && \
     dnf -y update && \
