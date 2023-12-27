@@ -2,15 +2,10 @@
 FROM centos:latest AS builder
 
 # 安装基础工具和依赖项
-RUN yum -y update && yum -y install \
-    gcc \
-    make \
-    openssl-devel \
-    bzip2-devel \
-    libffi-devel \
-    zlib-devel \
-    wget \
-    && yum clean all
+RUN yum -y update && \
+    yum -y install nginx && \
+    yum clean all
+
 
 # 安装 Python 3.8
 RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
