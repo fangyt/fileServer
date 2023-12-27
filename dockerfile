@@ -1,6 +1,6 @@
 
 # 安装基础工具和依赖项
-FROM centos:8
+FROM centos:latest
 
 # 使用阿里云的 CentOS 镜像源
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
@@ -29,10 +29,6 @@ RUN pip3.8 install --no-cache-dir -r requirements.txt
 
 # 复制应用程序代码
 COPY . .
-
-
-# 第二阶段：构建最终镜像
-FROM centos:latest
 
 # 安装基础工具和依赖项
 RUN yum -y update && yum -y install \
