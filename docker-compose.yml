@@ -1,5 +1,13 @@
+# 第一阶段：构建应用程序
+FROM centos:8 as builder
 
 # 安装 Python 3.8
+RUN yum -y update && yum -y install \
+    wget \
+    make \
+    gcc \
+    && yum clean all
+
 RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
     && tar xzf Python-3.8.12.tgz \
     && cd Python-3.8.12 \
