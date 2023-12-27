@@ -1,7 +1,23 @@
-# Dockerfile
+# 第一阶段：构建应用程序
+FROM centos:latest AS builder
 
-# 使用官方 Python 镜像
-FROM python:3.8-slim
+# 安装基础工具和依赖项
+RUN yum -y update && yum -y install \
+    gcc \
+    make \
+    openssl-devel \
+    bzip2-devel \
+    libffi-devel \
+    zlib-devel \
+    wget \
+    && yum clean all
+
+# 安装 Python 3.8
+RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
+    && tar xzf Python-3.8.12.tgz \
+    && cd Python-3.8.12 \
+    && ./configure --enable-optimizations \
+    && make altinstall
 
 # 设置工作目录
 WORKDIR /app
@@ -9,19 +25,26 @@ WORKDIR /app
 # 复制应用程序的依赖项文件
 COPY requirements.txt .
 
-# 安装依赖项
-RUN pip install --no-cache-dir -r requirements.txt
-
-# 安装 Nginx
-RUN yum check-update \
-    && yum install -y nginx \
-    && rm -rf /var/lib/apt/lists/*
-
-# 复制 Nginx 配置文件
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 安装应用程序依赖项
+RUN pip3.8 install --no-cache-dir -r requirements.txt
 
 # 复制应用程序代码
 COPY . .
+
+
+# 第二阶段：构建最终镜像
+FROM centos:latest
+
+# 安装基础工具和依赖项
+RUN yum -y update && yum -y install \
+    nginx \
+    && yum clean all
+
+# 从第一阶段复制构建的应用程序
+COPY --from=builder /app /app
+
+# 复制 Nginx 配置文件
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 暴露应用程序运行的端口
 EXPOSE 5000
