@@ -2,9 +2,8 @@
 FROM centos:8
 
 # 更新系统并安装基本工具
-RUN yum -y update && yum -y install \
-    epel-release \
-    && yum -y groupinstall "Development Tools"
+RUN yum -y update && yum -y install --disablerepo=appstream epel-release && yum -y groupinstall "Development Tools"
+
 
 # 安装 Python 3
 RUN yum -y install python38
