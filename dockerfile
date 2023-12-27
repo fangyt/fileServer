@@ -1,12 +1,10 @@
 # 第一阶段：构建应用程序
 FROM centos:8
 
-# 更新系统并安装基本工具
-RUN yum -y update && yum -y install --disablerepo=appstream epel-release && yum -y groupinstall "Development Tools"
-
-
-# 安装 Python 3
-RUN yum -y install python38
+# 更新系统并安装 Python 3
+RUN yum -y update && yum -y install \
+    python38 \
+    && yum clean all
 
 # 设置工作目录
 WORKDIR /app
