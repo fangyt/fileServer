@@ -1,10 +1,10 @@
 # 使用阿里云的 CentOS 镜像
-FROM centos:8
+FROM centos:latest
 
 # 安装基本工具和依赖项
-RUN dnf -y install epel-release && \
-    dnf -y update && \
-    dnf -y install \
+RUN yum -y install epel-release && \
+    yum -y update && \
+    yum -y install \
         python38 \
         nginx \
     && dnf clean all
@@ -21,9 +21,6 @@ RUN pip3.8 install --no-cache-dir -r requirements.txt
 
 # 复制应用程序代码
 COPY . .
-
-# 清理缓存
-RUN dnf clean all
 
 # 复制 Nginx 配置文件
 COPY nginx.conf /etc/nginx/conf.d/default.conf
