@@ -1,16 +1,14 @@
-# 第一阶段：构建应用程序
-FROM centos:latest AS builder
 
 # 安装基础工具和依赖项
-RUN yum -y update && yum -y install \
-    gcc \
-    make \
-    openssl-devel \
-    bzip2-devel \
-    libffi-devel \
-    zlib-devel \
-    wget \
-    && yum clean all
+FROM centos:8
+
+# 替换默认的 CentOS 镜像源为阿里云
+RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://mirrors.aliyun.com|g' /etc/yum.repos.d/CentOS-Base.repo && \
+    yum -y update && \
+    yum -y install nginx && \
+    yum clean all
+
 
 # 安装 Python 3.8
 RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
