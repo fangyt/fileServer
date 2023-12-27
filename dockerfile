@@ -1,10 +1,10 @@
 # 第一阶段：构建应用程序
-FROM centos:latest AS builder
+FROM centos:8
 
-# 安装基础工具和依赖项
 RUN yum -y update && \
     yum -y install nginx && \
     yum clean all
+
 
 
 # 安装 Python 3.8
