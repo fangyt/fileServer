@@ -35,5 +35,30 @@ def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
+import os
+import time
+
+
+def delete_old_files(folder_path=UPLOAD_FOLDER, days=3):
+    # 获取当前时间戳
+    current_time = time.time()
+
+    # 遍历文件夹内的文件
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+
+        # 检查文件是否是普通文件且最后一次修改时间在指定天数之前
+        if os.path.isfile(file_path) and (current_time - os.path.getmtime(file_path)) > (days * 24 * 3600):
+            try:
+                # 删除文件
+                os.remove(file_path)
+                print(f"Deleted: {file_path}")
+            except Exception as e:
+                print(f"Error deleting {file_path}: {e}")
+
+
+# 调用函数删除过期文件
+
 if __name__ == '__main__':
     app.run(debug=True)
+    delete_old_files()
