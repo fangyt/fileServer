@@ -2,6 +2,9 @@
 FROM centos:latest
 
 # 安装基本工具和依赖项
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/Centos-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/Centos-*
+RUN wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-vault-8.5.2111.repo
 RUN yum -y install epel-release && \
     yum -y update && \
     yum -y install \
