@@ -2,12 +2,13 @@
 # 安装基础工具和依赖项
 FROM centos:8
 
-# 替换默认的 CentOS 镜像源为阿里云
+# 使用阿里云的 CentOS 镜像源
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
     sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://mirrors.aliyun.com|g' /etc/yum.repos.d/CentOS-Base.repo && \
     yum -y update && \
-    yum -y install nginx && \
+    yum -y install gcc make openssl-devel bzip2-devel libffi-devel zlib-devel wget && \
     yum clean all
+
 
 
 # 安装 Python 3.8
