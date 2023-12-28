@@ -23,6 +23,7 @@ COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # 打印目录
+RUN ls
 RUN pwd
 
 # 复制应用程序代码
