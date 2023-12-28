@@ -2,12 +2,14 @@ version: '3'
 
 services:
   python-app:
-    build: ./app/app.py
+    build: ./
     ports:
       - "5000:5000"
+    volumes:
+      - ./app:/app
 
 #  nginx:
-#    image: nginx
+#    image: nginx:latest
 #    volumes:
 #      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 #    ports:
