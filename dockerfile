@@ -1,14 +1,6 @@
-# 第一阶段：构建应用程序
-FROM ubuntu:20.04
-
-
-# 安装基本工具和依赖项
+# 安装 Python 相关工具和依赖项
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        wget \
-        make \
-        gcc \
-        nginx \
         python3 \
         python3-pip \
     && apt-get clean \
@@ -17,25 +9,6 @@ RUN apt-get update \
 # 设置工作目录
 WORKDIR /app
 
-# 在安装依赖项之前清除 Python 缓存
-RUN find /app -type f -name '*.pyc' -delete
-
-# 复制应用程序代码
-COPY app /app/
-
 # 安装应用程序依赖项
-RUN pip3 install --no-cache-dir -r app/requirements.txt
-
-# 复制应用程序代码
-COPY app /app/
-
-# # 复制 Nginx 配置文件
-# COPY nginx.conf /etc/nginx/sites-available/default
-
-# 暴露应用程序运行的端口
-EXPOSE 5000
-
-# 启动 Nginx 和应用程序
-# CMD service nginx start && python3 app/app.py
-# CMD python3 -u ${pwd}/app/app.py
-
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
