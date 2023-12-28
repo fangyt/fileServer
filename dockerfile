@@ -22,9 +22,11 @@ COPY requirements.txt .
 # 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -r requirements.txt
 
+# 打印目录
+RUN pwd
+
 # 复制应用程序代码
 COPY app /app/
-
 
 # 复制 Nginx 配置文件
 COPY nginx.conf /etc/nginx/sites-available/default
