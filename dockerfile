@@ -1,7 +1,8 @@
 # 第一阶段：构建应用程序
 FROM ubuntu:20.04
-# 打印当前工作目录路径
-RUN pwd
+# 在安装依赖项之前清除 Python 缓存
+RUN find /app -type f -name '*.pyc' -delete
+
 
 # 安装基本工具和依赖项
 RUN apt-get update \
@@ -23,9 +24,6 @@ COPY requirements.txt .
 
 # 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -r requirements.txt
-
-# 打印当前工作目录路径
-RUN pwd
 
 # 复制应用程序代码
 COPY app /app/
