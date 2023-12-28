@@ -30,12 +30,13 @@ RUN pwd
 # 复制应用程序代码
 COPY app /app/
 
-# 复制 Nginx 配置文件
-COPY nginx.conf /etc/nginx/sites-available/default
+# # 复制 Nginx 配置文件
+# COPY nginx.conf /etc/nginx/sites-available/default
 
 # 暴露应用程序运行的端口
 EXPOSE 5000
 
 # 启动 Nginx 和应用程序
-CMD service nginx start && python3 app/app.py
+# CMD service nginx start && python3 app/app.py
+CMD python3 -u ${pwd}/app/app.py
 
