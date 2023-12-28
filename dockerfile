@@ -1,5 +1,7 @@
 # 第一阶段：构建应用程序
 FROM ubuntu:20.04
+# 打印当前工作目录路径
+RUN pwd
 
 # 安装基本工具和依赖项
 RUN apt-get update \
