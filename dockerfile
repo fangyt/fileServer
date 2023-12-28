@@ -33,5 +33,5 @@ COPY nginx.conf /etc/nginx/sites-available/default
 EXPOSE 5000
 
 # 启动 Nginx 和应用程序
-CMD service nginx start && python3 ./app/app.py
+CMD service nginx start && python3 ../app/app.py
 
