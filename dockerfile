@@ -21,10 +21,10 @@ WORKDIR /app
 RUN find /app -type f -name '*.pyc' -delete
 
 # 复制应用程序代码
-COPY app /app/
+COPY app/* /app/
 
 # 安装应用程序依赖项
-RUN pip3 install --no-cache-dir -r app/requirements.txt
+RUN pip3 install --no-cache-dir -r ./app/requirements.txt
 
 # 复制应用程序代码
 COPY app /app/
