@@ -1,9 +1,9 @@
-# docker-compose.yml
 version: '3'
+
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  python-app:
+    build: ./
     ports:
       - "5000:5000"
+    volumes:
+      - ./app:/app
