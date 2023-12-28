@@ -20,9 +20,8 @@ WORKDIR /app
 # 在安装依赖项之前清除 Python 缓存
 RUN find /app -type f -name '*.pyc' -delete
 
-
-# 复制应用程序的依赖项文件
-COPY requirements.txt .
+# 复制应用程序代码
+COPY app /app/
 
 # 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -r requirements.txt
