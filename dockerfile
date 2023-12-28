@@ -22,8 +22,7 @@ COPY requirements.txt .
 # 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# 打印目录
-RUN ls
+# 打印当前工作目录路径
 RUN pwd
 
 # 复制应用程序代码
