@@ -2,8 +2,6 @@ version: '3'
 
 services:
   python-app:
-    build: ./
+    build: ./app/
     ports:
-      - "5000:5000"
-    volumes:
-      - ./app:/app
+      - "8089:8089"

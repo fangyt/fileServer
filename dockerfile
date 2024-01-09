@@ -15,13 +15,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置工作目录
-WORKDIR /app
+WORKDIR ./app
 
 # 在安装依赖项之前清除 Python 缓存
 RUN find /app -type f -name '*.pyc' -delete
 
 # 复制应用程序代码
-COPY app/* /app/
+ADD
 
 # 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -r ./requirements.txt
@@ -30,8 +30,8 @@ RUN pip3 install --no-cache-dir -r ./requirements.txt
 COPY nginx.conf /etc/nginx/sites-available/default
 
 # 暴露应用程序运行的端口
-EXPOSE 5000
+EXPOSE 8089
 
 启动 Nginx 和应用程序
-CMD service nginx start && python3 ./app/app.py
+CMD service nginx start && python3 app.py
 
