@@ -17,9 +17,6 @@ RUN apt-get update \
 # 设置工作目录
 WORKDIR ./
 
-# 在安装依赖项之前清除 Python 缓存
-RUN find /app -type f -name '*.pyc' -delete
-
 # 复制应用程序代码
 ADD app.tar.gz /.
 
