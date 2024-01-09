@@ -32,8 +32,6 @@ COPY nginx.conf /etc/nginx/sites-available/default
 # 暴露应用程序运行的端口
 EXPOSE 8089
 
-RUN cd /app
-
 启动 Nginx 和应用程序
-CMD service nginx start && python3 app.py
+CMD service nginx start && python3 app/app.py
 
