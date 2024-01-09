@@ -2,6 +2,6 @@ version: '3'
 
 services:
   python-app:
-    build: ./app/
+    build: .
     ports:
       - "8089:8089"
