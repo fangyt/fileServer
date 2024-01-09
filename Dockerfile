@@ -30,5 +30,5 @@ COPY nginx.conf /etc/nginx/sites-available/default
 EXPOSE 8089
 
 #启动 Nginx 和应用程序
-CMD service nginx start && python3 ./app.py
+CMD ["bash", "-c", "service nginx start && python3 ./app.py"]
 
