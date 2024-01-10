@@ -16,10 +16,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置工作目录
-WORKDIR ./
-
+WORKDIR ./App
 # 复制应用程序代码
-ADD app.tar.gz /.
+ADD app.tar.gz .
 
 ## 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r ./requirements.txt
