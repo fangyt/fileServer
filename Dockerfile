@@ -27,7 +27,7 @@ RUN pip3 install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r .
 COPY nginx.conf /etc/nginx/sites-available/default
 
 # 暴露应用程序运行的端口
-EXPOSE 8089
+EXPOSE 5000
 
 #启动 Nginx 和应用程序
 CMD ["bash", "-c", "service nginx start && python3 ./app.py"]
