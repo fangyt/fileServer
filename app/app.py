@@ -1,7 +1,12 @@
 import os
+import datetime
+import schedule
+import time
 import logging
+import atexit
 from flask import Flask, render_template, request, send_from_directory
 from logging import handlers
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -43,18 +48,44 @@ class Logger(object):
         self.logger.addHandler(th)
 
 
+def delete_old_files(folder_path=UPLOAD_FOLDER, days_to_keep=2):
+    # 获取当前日期
+    current_date = datetime.datetime.now()
+
+    # 计算删除的日期阈值
+    threshold_date = current_date - datetime.timedelta(days=days_to_keep)
+
+    try:
+        # 遍历文件夹内的文件
+        for filename in os.listdir(folder_path):
+
+            file_path = os.path.join(folder_path, filename)
+
+            print(os.path.isfile(file_path))
+            print(os.path.getmtime(file_path))
+            print(threshold_date.timestamp())
+            # 检查文件是文件而不是子文件夹，并且最后修改时间早于阈值
+            if os.path.isfile(file_path) and os.path.getmtime(file_path) < threshold_date.timestamp():
+                # 删除文件
+                os.remove(file_path)
+                print(f"Deleted old file: {file_path}")
+
+    except Exception as e:
+        print(f"Error deleting files: {e}")
+
+
 # 路由：首页
 @app.route('/')
 def index():
     # 获取已上传文件列表
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     try:
-        Logger(os.path.join(access_log_file_path, 'index_access.log'), level='debug').logger.info(
+        Logger(os.path.join(access_log_file_path, 'index_access.log'), level='info').logger.info(
             'User accessed the homepage.')
     except Exception as e:
         print(f'Error writing to log file: {e}')
-        Logger(os.path.join(error_log_file_path, 'index_error.log'), level='debug').logger.error(f'Error writing to log file: {e}')
-
+        Logger(os.path.join(error_log_file_path, 'index_error.log'), level='info').logger.error(
+            f'Error writing to log file: {e}')
 
     return render_template('index.html', files=files)
 
@@ -63,36 +94,48 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return 'No file part'
+        return jsonify({'code': '1', 'msg': 'No file part'})
 
     file = request.files['file']
 
     if file.filename == '':
-        return 'No selected file'
+        return jsonify({'code': '1', 'msg': 'No selected file'})
 
     filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
     file.save(filename)
+
     try:
-        Logger(os.path.join(access_log_file_path, 'upload_access.log'), level='debug').logger.info('info')(
+        Logger(os.path.join(access_log_file_path, 'upload_access.log'), level='info').logger.info(
             f'File uploaded: {file.filename}')
-        return "{'code':'0','msg':'File uploaded successfully'}"
+        return jsonify({'code': '0', 'msg': 'File uploaded successfully'})
     except Exception as e:
         print(f'Error writing to log file: {e}')
-        Logger(os.path.join(error_log_file_path, 'upload_error.log'), level='debug').logger.error(
+        Logger(os.path.join(error_log_file_path, 'upload_error.log'), level='info').logger.error(
             f'Error writing to log file: {e}')
+        return jsonify({'code': '1', 'msg': f'Error uploading file: {e}'})
 
 
 # 路由：文件下载
 @app.route('/download/<filename>', methods=['GET'])
 def download_file(filename):
     try:
-        Logger(os.path.join(access_log_file_path, 'download_access.log'), level='debug').logger.info(f'User requested to download file: {filename}')
+        Logger(os.path.join(access_log_file_path, 'download_access.log'), level='debug').logger.info(
+            f'User requested to download file: {filename}')
 
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     except Exception as e:
         Logger(os.path.join(error_log_file_path, 'download_error.log')).logger.error(f'Error writing to log file: {e}')
 
 
+def mian():
+    app.run(host='0.0.0.0', port=8089)
+    job = schedule.every().day.at("01:00").do(delete_old_files)
+    atexit.register(lambda: job.cancel())
+    # 无限循环执行定时任务
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8089)
+    mian()
