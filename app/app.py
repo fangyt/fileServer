@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, send_from_directory
 from logging import handlers
 from flask import jsonify
 from apscheduler.schedulers.blocking import BlockingScheduler
+
 app = Flask(__name__)
 
 # 设置文件上传目录
@@ -126,3 +127,12 @@ def download_file(filename):
     except Exception as e:
         Logger(os.path.join(error_log_file_path, 'download_error.log')).logger.error(f'Error writing to log file: {e}')
 
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+    scheduler = BlockingScheduler(timezone="UTC")
+
+    # 使用 cron 触发器，每天凌晨1点执行一次
+    scheduler.add_job(delete_old_files, 'cron', hour=1, minute=0)
+    scheduler.start()
+    atexit.register(lambda: scheduler.shutdown())

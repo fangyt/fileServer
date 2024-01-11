@@ -28,4 +28,4 @@ RUN pip3 install --no-cache-dir -r ./requirements.txt
 EXPOSE 5000
 
 # 启动应用程序
-CMD ["gunicorn", "--config", "gunicorn_config.py", "app:app"]
+CMD ["python3", "./app.py"]
