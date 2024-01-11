@@ -4,7 +4,7 @@ services:
   python-app:
     build: .
     ports:
-      - "8089:5000"
+      - "5000:5000"
 
 # 注释掉 Nginx 相关的部分
   nginx:
