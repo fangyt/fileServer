@@ -131,5 +131,6 @@ scheduler = BlockingScheduler()
 
 # 使用 cron 触发器，每天凌晨1点执行一次
 scheduler.add_job(delete_old_files, 'cron', hour=1, minute=0)
+atexit.register(lambda: scheduler.shutdown())
 
 scheduler.start()
