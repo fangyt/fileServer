@@ -9,6 +9,7 @@ RUN apt-get update \
         gcc \
         python3 \
         python3-pip \
+        nginx \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -21,11 +22,11 @@ ADD app.tar.gz .
 ## 安装应用程序依赖项
 RUN pip3 install --no-cache-dir -r ./requirements.txt
 
-## 复制 Nginx 配置文件
-# COPY nginx.conf /etc/nginx/sites-available/default
+# 复制 Nginx 配置文件
+ COPY nginx.conf /etc/nginx/sites-available/default
 
 # 暴露应用程序运行的端口
 EXPOSE 5000
 
 # 启动应用程序
-CMD ["python3", "./app.py"]
+CMD ["sh", "-c", "python3 ./app.py & nginx -g 'daemon off;'"]
