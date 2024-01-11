@@ -78,7 +78,6 @@ def delete_old_files(folder_path=UPLOAD_FOLDER, days_to_keep=2):
 @app.route('/')
 def index():
     # 获取已上传文件列表
-    mian()
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     try:
         Logger(os.path.join(access_log_file_path, 'index_access.log'), level='info').logger.info(
@@ -128,11 +127,9 @@ def download_file(filename):
         Logger(os.path.join(error_log_file_path, 'download_error.log')).logger.error(f'Error writing to log file: {e}')
 
 
-def mian():
-    job = schedule.every().day.at("01:00").do(delete_old_files)
-    atexit.register(lambda: job.cancel())
-    # 无限循环执行定时任务
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-    
+scheduler = BlockingScheduler()
+
+# 使用 cron 触发器，每天凌晨1点执行一次
+scheduler.add_job(delete_old_files, 'cron', hour=1, minute=0)
+
+scheduler.start()
