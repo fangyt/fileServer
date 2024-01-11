@@ -1,10 +1,12 @@
-version: '3'
-
 services:
   python-app:
     build: .
     ports:
-      - "8089:5000"  # 将容器的5000端口映射到主机的8089端口
+      - "8089:5000"
+    resources:
+      reservations:
+        memory: 1.5g
+
 
 # 注释掉 Nginx 相关的部分
 #  nginx:
