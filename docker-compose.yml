@@ -1,11 +1,13 @@
+version: '3'
+
 services:
   python-app:
     build: .
+    command: gunicorn -w 4 -b 0.0.0.0:5000 app:app
     ports:
       - "8089:5000"
-    resources:
-      reservations:
-        memory: 1.5g
+    mem_limit: 1.5g
+
 
 
 # 注释掉 Nginx 相关的部分
