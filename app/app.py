@@ -78,6 +78,7 @@ def delete_old_files(folder_path=UPLOAD_FOLDER, days_to_keep=2):
 @app.route('/')
 def index():
     # 获取已上传文件列表
+    mian()
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     try:
         Logger(os.path.join(access_log_file_path, 'index_access.log'), level='info').logger.info(
@@ -128,14 +129,10 @@ def download_file(filename):
 
 
 def mian():
-    app.run(host='0.0.0.0', port=8089)
     job = schedule.every().day.at("01:00").do(delete_old_files)
     atexit.register(lambda: job.cancel())
     # 无限循环执行定时任务
     while True:
         schedule.run_pending()
         time.sleep(1)
-
-
-if __name__ == '__main__':
-    mian()
+    

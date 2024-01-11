@@ -25,7 +25,7 @@ RUN pip3 install --no-cache-dir -r ./requirements.txt
 # COPY nginx.conf /etc/nginx/sites-available/default
 
 # 暴露应用程序运行的端口
-EXPOSE 8089
+EXPOSE 5000
 
 # 启动应用程序
-CMD ["python3", "./app.py"]
+CMD ["gunicorn", "--config", "gunicorn_config.py", "app:app"]
