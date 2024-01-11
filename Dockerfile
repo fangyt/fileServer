@@ -27,7 +27,7 @@ RUN pip3 install --no-cache-dir -r ./requirements.txt
 COPY nginx.conf /etc/nginx/sites-available/default
 
 # 暴露应用程序运行的端口
-EXPOSE 5000
+EXPOSE 8089
 
 #启动 Nginx 和应用程序
 CMD ["bash", "-c", "service nginx start && python3 ./app.py"]
