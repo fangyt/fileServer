@@ -4,7 +4,7 @@ services:
   python-app:
     build: .
     ports:
-      - "8089:8089"
+      - "5000:8089"  # 将容器的5000端口映射到主机的8089端口
 
   nginx:
     image: nginx:latest
