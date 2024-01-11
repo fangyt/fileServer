@@ -126,12 +126,3 @@ def download_file(filename):
     except Exception as e:
         Logger(os.path.join(error_log_file_path, 'download_error.log')).logger.error(f'Error writing to log file: {e}')
 
-
-# scheduler = BlockingScheduler()
-# 
-# # 使用 cron 触发器，每天凌晨1点执行一次
-# scheduler.add_job(delete_old_files, 'cron', hour=1, minute=0)
-# atexit.register(lambda: scheduler.shutdown())
-
-# scheduler.start()
-
